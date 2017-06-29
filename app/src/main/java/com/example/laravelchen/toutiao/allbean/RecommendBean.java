@@ -18,6 +18,7 @@ public class RecommendBean {
     private String comment_couont;
     private String share_url;
     private String group_id;
+    private int adType;
 
     public String getGroup_id() {
         return group_id;
@@ -90,4 +91,10 @@ public class RecommendBean {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public void setAdType (int adType) {
+        this.adType =adType;
+    }
+
+    public int adType() { return adType; }
 }

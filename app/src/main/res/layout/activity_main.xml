@@ -35,6 +35,35 @@
 
     </LinearLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/ad_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+        <LinearLayout
+            android:id="@+id/ad_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ImageView
+                android:id="@+id/ad_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+            <WebView
+                android:id="@+id/ad_webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"

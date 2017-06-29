@@ -1,22 +1,20 @@
 package com.example.laravelchen.toutiao.alladapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.laravelchen.toutiao.Interface.OnItemClickListener;
+import com.example.laravelchen.toutiao.Interface.OnAdClickListener;
 import com.example.laravelchen.toutiao.R;
 import com.example.laravelchen.toutiao.allbean.RecommendBean;
 import com.example.laravelchen.toutiao.extra.ImgLoader;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +26,7 @@ import java.util.List;
 public class RecommendAdapter extends RecyclerView.Adapter {
     private List<RecommendBean> lists;
     private OnItemClickListener onItemClickListener;
+    private OnAdClickListener onAdClickListener;
     private Context context;
 
     public RecommendAdapter(List<RecommendBean> lists, Context context) {
@@ -42,6 +41,10 @@ public class RecommendAdapter extends RecyclerView.Adapter {
     //点击接口
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
+    }
+
+    public void setOnAdClickListener(OnAdClickListener listener) {
+        this.onAdClickListener = listener;
     }
 
     //有图片的模板
@@ -98,8 +101,36 @@ public class RecommendAdapter extends RecyclerView.Adapter {
         }
     }
 
+    //Umax ad View模板
+    class AdUmaxView extends RecyclerView.ViewHolder implements  View.OnClickListener {
+        private TextView adTitle;
+        private ImageView adImage;
+        private WebView adWebView;
+        private OnAdClickListener mOnAdClickListener;
+
+        public AdUmaxView(View itemView, OnAdClickListener onItemClickListener) {
+            super(itemView);
+            adTitle = (TextView) itemView.findViewById(R.id.ad_title);
+            adImage = (ImageView) itemView.findViewById(R.id.ad_image);
+
+            //点击事件
+            mOnAdClickListener = onItemClickListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnAdClickListener != null) {
+                mOnAdClickListener.onClick(v, adImage.getDrawable());
+            }
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
+        //判断是否广告
+        if (lists.get(position).adType() != 0)
+            return lists.get(position).adType();
         //判断有没有图片
         if (lists.get(position).isHasimg()) {
             return 1;
@@ -116,6 +147,10 @@ public class RecommendAdapter extends RecyclerView.Adapter {
         if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommend_home_no_image, parent, false);
             return new NoImageView(view, onItemClickListener);
+        }
+        if (viewType == 101) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recommend_home_ad_umax, parent, false);
+            return new AdUmaxView(view, onAdClickListener);
         }
         return null;
     }
@@ -136,6 +171,14 @@ public class RecommendAdapter extends RecyclerView.Adapter {
             NoImageView vh = (NoImageView) holder;
             vh.hotTitle.setText(lists.get(position).getTitle());
             vh.hotExtra.setText(lists.get(position).getSource() + " - " + lists.get(position).getComment_couont() + "条评论");
+        }
+        // for ad
+        if (holder instanceof AdUmaxView) {
+            AdUmaxView aduv = (AdUmaxView) holder;
+            aduv.adTitle.setText(lists.get(position).getTitle());
+            if (lists.get(position).getImg() != null) {
+                new ImgLoader(context).disPlayimg(lists.get(position).getImg(),aduv.adImage);
+            }
         }
     }
 

@@ -21,7 +21,7 @@ public class ImgLoader {
         displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
+                .bitmapConfig(Bitmap.Config.ARGB_8888)
                 .build();
         imageLoaderConfiguration = new ImageLoaderConfiguration.Builder(context).build();
         imageLoader = ImageLoader.getInstance();

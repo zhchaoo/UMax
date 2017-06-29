@@ -71,19 +71,19 @@ public class ArticleContentShow extends AppCompatActivity {
 
     private void download() {
         webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-
-                if (newProgress == 100) {
-                    // 加载完毕
-                    closeDialog(newProgress);
-                } else {
-                    openDialog(newProgress);
-                }
-
-
-                super.onProgressChanged(view, newProgress);
-            }
+//            @Override
+//            public void onProgressChanged(WebView view, int newProgress) {
+//
+//                if (newProgress == 100) {
+//                    // 加载完毕
+//                    closeDialog(newProgress);
+//                } else {
+//                    openDialog(newProgress);
+//                }
+//
+//
+//                super.onProgressChanged(view, newProgress);
+//            }
 
             private void openDialog(int newProgress) {
                 if (dialog == null) {
